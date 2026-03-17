@@ -24,4 +24,4 @@ jobs:
         working-directory: ./test
         env:
           USE_BAZEL_VERSION: latest-${{ matrix.bazel-version }}
-        run: bazelisk test //:format_test
+        run: bazelisk test //...

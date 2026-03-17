@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 def _glslang_toolchain_impl(ctx):
-    return [platform_common.ToolchainInfo(_tool = ctx.executable.tool)]
+    return [platform_common.ToolchainInfo(tool = ctx.executable.tool)]
 
 glslang_toolchain = rule(
     implementation = _glslang_toolchain_impl,

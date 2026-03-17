@@ -1,7 +1,7 @@
 # glslang-prebuilt
 
 This repository provides Bazel rules for fetching a prebuilt version of glslang from LunarG's Vulkan SDK, and providing it as a Bazel toolchain.
-It is meant to be used as a dependency in other Bazel project that implement Bazel rules using glslang.
+It is meant to be used as a dependency in other Bazel project that implement Bazel rules that use glslang.
 
 ## Usage
 
