@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Siradel
+# SPDX-License-Identifier: MIT
+
+package(default_visibility = ["//visibility:public"])
+
+toolchain_type(
+    name = "toolchain_type",
+)

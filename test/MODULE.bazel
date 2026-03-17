@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2026 Siradel
+# SPDX-License-Identifier: MIT
+
+module(name = "glslang_prebuilt-test")
+
+bazel_dep(name = "glslang_prebuilt")
+local_path_override(
+    module_name = "glslang_prebuilt",
+    path = "../",
+)
+
+bazel_dep(name = "bazel_lib", version = "3.2.2")

@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Siradel
+# SPDX-License-Identifier: MIT
+
+name: Test the current main branch
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        bazel-version: ["7", "8", "9"]
+    name: Test Bazel ${{ matrix.bazel-version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: Run tests Bazel ${{ matrix.bazel-version }}
+        working-directory: ./test
+        env:
+          USE_BAZEL_VERSION: latest-${{ matrix.bazel-version }}
+        run: bazelisk test //:format_test

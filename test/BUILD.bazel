@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2026 Siradel
+# SPDX-License-Identifier: MIT
+
+load("@bazel_lib//lib:diff_test.bzl", "diff_test")
+
+genrule(
+    name = "format_main",
+    srcs = ["main.cpp"],
+    outs = ["main_formatted.cpp"],
+    tools = ["@glslang_prebuilt//glslang"],
+    cmd = "$(location @glslang_prebuilt//glslang) $< > $@",
+)
+
+diff_test(
+    name = "format_test",
+    file1 = "main_formatted.cpp",
+    file2 = "main_formatted_expected.cpp",
+)

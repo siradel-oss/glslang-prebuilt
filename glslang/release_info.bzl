@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Siradel
+# SPDX-License-Identifier: MIT
+
+RELEASE_INFO = [
+]
