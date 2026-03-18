@@ -21,6 +21,7 @@ env:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   glslang-prebuilt:
@@ -50,3 +51,10 @@ jobs:
             --title "glslang ${{ inputs.glslang_version }}" \
             $WINDOWS_ARTIFACT_NAME.tar.xz \
             $LINUX_ARTIFACT_NAME.tar.xz
+      - name: Trigger test workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run test.yml \
+            --repo ${{ github.repository }} \
+            --ref main
