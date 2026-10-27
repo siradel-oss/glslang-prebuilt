@@ -40,9 +40,7 @@ jobs:
         run: |
           gh release create v${{ inputs.glslang_version }} \
             --repo ${{ github.repository }} \
-            --title "glslang ${{ inputs.glslang_version }}" \
-            $WINDOWS_ARTIFACT_NAME.tar.xz \
-            $LINUX_ARTIFACT_NAME.tar.xz
+            --title "glslang ${{ inputs.glslang_version }}"
       - name: Trigger test workflow
         env:
           GH_TOKEN: ${{ github.token }}
