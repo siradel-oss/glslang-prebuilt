@@ -2,11 +2,18 @@
 # SPDX-License-Identifier: MIT
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load(":release_info.bzl", "RELEASE_INFO")
+load(":release_info.bzl", "GLSLANG_VERSION", "INTEGRITY")
+
+_PLATFORMS = [
+    {"name": "linux-x86_64", "os": "linux", "cpu": "x86_64"},
+    {"name": "windows-x86_64", "os": "windows", "cpu": "x86_64"},
+]
+
+_URL_TEMPLATE = "https://github.com/KhronosGroup/glslang/releases/download/{version}/glslang-{version}-{platform}-release.zip"
 
 def _executable_path(os):
     if os == "windows":
-        return "Bin/glslang.exe"
+        return "bin/glslang.exe"
     elif os == "linux":
         return "bin/glslang"
     else:
@@ -15,14 +22,13 @@ def _executable_path(os):
 def _prebuilt_repo_name(os, cpu):
     return "glslang_prebuilt_{}_{}".format(os, cpu)
 
-def _glslang_prebuilt_setup(name, url, integrity, os, prefix):
+def _glslang_prebuilt_setup(name, url, integrity, os):
     executable_path = _executable_path(os)
 
     http_archive(
         name = name,
         urls = [url],
         integrity = integrity,
-        strip_prefix = prefix,
         build_file_content = """
 exports_files(["{executable_path}"])
 """.format(executable_path = executable_path),
@@ -34,7 +40,7 @@ load("@glslang_prebuilt//glslang:toolchain.bzl", "declare_toolchain")
 package(default_visibility = ["//visibility:public"])
 """
 
-    for info in RELEASE_INFO:
+    for info in _PLATFORMS:
         repo_name = _prebuilt_repo_name(info["os"], info["cpu"])
         build_file_content += """
 declare_toolchain(
@@ -57,14 +63,13 @@ _glslang_toolchains = repository_rule(
 )
 
 def _prebuilt_extension_impl(ctx):
-    for info in RELEASE_INFO:
+    for info in _PLATFORMS:
         repo_name = _prebuilt_repo_name(info["os"], info["cpu"])
         _glslang_prebuilt_setup(
             name = repo_name,
-            url = info["url"],
-            integrity = info["integrity"],
+            url = _URL_TEMPLATE.format(version = GLSLANG_VERSION, platform = info["name"]),
+            integrity = INTEGRITY[info["name"]],
             os = info["os"],
-            prefix = info["prefix"],
         )
 
     _glslang_toolchains(

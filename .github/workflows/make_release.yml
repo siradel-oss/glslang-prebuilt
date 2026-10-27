@@ -1,23 +1,15 @@
 # SPDX-FileCopyrightText: 2026 Siradel
 # SPDX-License-Identifier: MIT
 
-name: Download and release prebuilt glslang
+name: Release prebuilt glslang
 
 on:
   workflow_dispatch:
     inputs:
-      vulkan_sdk_version:
-        description: 'The Vulkan SDK version to download glslang from'
-        required: true
-        type: string
       glslang_version:
         description: 'The version of glslang to release'
         required: true
         type: string
-
-env:
-  WINDOWS_ARTIFACT_NAME: glslang-${{ inputs.glslang_version }}-windows-x86_64
-  LINUX_ARTIFACT_NAME: glslang-${{ inputs.glslang_version }}-linux-x86_64
 
 permissions:
   contents: write
@@ -32,14 +24,14 @@ jobs:
         with:
           path: ./repo
       - name: Run make_release.sh
-        run: ./repo/make_release.sh ${{ inputs.vulkan_sdk_version }} ${{ inputs.glslang_version }}
+        run: ./repo/make_release.sh ${{ inputs.glslang_version }}
       - name: Commit and tag release
         working-directory: ./repo
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add glslang/release_info.bzl
-          git commit -m "Release glslang ${{ inputs.glslang_version }}"
+          git add glslang/release_info.bzl glslang/LICENSE.txt
+          git diff --cached --quiet || git commit -m "Release glslang ${{ inputs.glslang_version }}"
           git tag -a v${{ inputs.glslang_version }} -m "glslang ${{ inputs.glslang_version }}"
           git push origin main --tags
       - name: Create release

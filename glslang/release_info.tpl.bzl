@@ -1,19 +1,9 @@
 # SPDX-FileCopyrightText: 2026 Siradel
 # SPDX-License-Identifier: MIT
 
-RELEASE_INFO = [
-    {
-        "os": "windows",
-        "cpu": "x86_64",
-        "url": "%WINDOWS_URL%",
-        "integrity": "%WINDOWS_INTEGRITY%",
-        "prefix": "%WINDOWS_PREFIX%",
-    },
-    {
-        "os": "linux",
-        "cpu": "x86_64",
-        "url": "%LINUX_URL%",
-        "integrity": "%LINUX_INTEGRITY%",
-        "prefix": "%LINUX_PREFIX%",
-    },
-]
+GLSLANG_VERSION = "%VERSION%"
+
+INTEGRITY = {
+    "linux-x86_64": "%LINUX_INTEGRITY%",
+    "windows-x86_64": "%WINDOWS_INTEGRITY%",
+}
